@@ -54,7 +54,7 @@ def main(argv):
     parser.add_option('--title',
                       help="Set the video title")
     parser.add_option('--description',
-                      help="Set the video description")
+                      help="Set the video description. Read from a file using \"<path/to/description.txt\"")
     parser.add_option('--privacy',
                       help="Set the video privacy (anybody; nobody; contacts; users:u1,u2; password:pwd; disable)")
     parser.add_option('--tags',
@@ -109,7 +109,9 @@ def main(argv):
     if options.title:
         client.vimeo_videos_setTitle(video_id=vid, title=options.title)
 
-    if options.description :
+    if options.description:
+        if options.description.startswith("<"):
+            options.description = open(options.description.lstrip('<'), 'r').read()
         client.vimeo_videos_setDescription(video_id=vid, description=options.description)
 
     if options.tags:
